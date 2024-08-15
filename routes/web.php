@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -14,8 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function () use ($router) {
     // return view('welcome');
     $user = User::all();
     return $user;
+    // dd($router);
+});
+
+Route::get('/version', function () {
+    return app()->version();
+});
+
+Route::get('/users', [UserController::class, 'index']);
+
+Route::group(['prefix' => 'api/v1/'], function () {
+    Route::get('test', function () {
+        return 'hello';
+    });
+
+    Route::get('/users', [UserController::class, 'index']);
 });
